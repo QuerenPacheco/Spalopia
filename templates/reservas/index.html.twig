@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block body %}
+    <h1>Registro</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.nombre) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.servicio) }}
+    {{ form_row(form.precio) }}
+
+{{ form_end(form) }}
+
+<script>
+    window.addEventListener("load", function() {
+        setPrecioServicio()
+        document.querySelector('form').addEventListener('change', function() {
+            setPrecioServicio()
+        });
+    });
+
+    function setPrecioServicio() {
+        var selectServicio = document.querySelector('#reserva_servicio')
+        var selectedIndex = selectServicio.selectedIndex
+        var servicioSeleccionado = selectServicio.options[selectedIndex];
+        var precio = servicioSeleccionado.getAttribute('data-precio');
+
+        document.querySelector('#reserva_precio').value = precio + ' €'
+    }
+</script>
+{% endblock %}
