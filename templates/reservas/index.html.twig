@@ -42,9 +42,10 @@
         function modificarFormulario(data){
             const divHoras = document.querySelector('#horasDisponibles')
             divHoras.innerHTML = ""
-            if(typeof data === 'string'){
+            console.log(data.length)
+            if(data.length === 0){
                 const mensaje = document.createElement('p');
-                mensaje.innerHTML = data
+                mensaje.innerHTML = 'No hay servicios disponibles para este día'
                 mensaje.style.color = "red"
                 divHoras.appendChild(mensaje);
             }else{

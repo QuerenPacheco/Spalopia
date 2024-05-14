@@ -38,7 +38,7 @@ class ReservaServicioController extends AbstractController
     public function listarHoras($servicio, $fecha, ReservaServicioService $reservaServicioService): Response 
     {
         
-        $horasDisponibles = $reservaServicioService->gestionListadoReservas($fecha, $servicio);
+        $horasDisponibles = $reservaServicioService->getListadoHoras($fecha, $servicio);
         
         return $this->render('listadoHorasDisponibles.html.twig', [
             'horasDisponibles' => $horasDisponibles,
