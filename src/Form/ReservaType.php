@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ReservaType extends AbstractType
 {
@@ -50,9 +51,8 @@ class ReservaType extends AbstractType
                 'widget' => 'single_text'
                 ,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Por favor, ingresa una fecha.',
-                    ]),
+                    new Assert\NotBlank(['message' => 'Por favor, introduce una fecha.']),
+                    new Assert\Date(['message' => 'El valor {{ value }} no es una fecha válida.'])
                 ],
                 
                 
@@ -63,7 +63,9 @@ class ReservaType extends AbstractType
 
             ->add('hora', HiddenType::class)
 
-            ->add('Reservar', SubmitType::class);
+            ->add('Reservar', SubmitType::class, [
+                'disabled' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
