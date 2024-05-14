@@ -16,6 +16,10 @@
                 setPrecioServicio()
                 buscarServiciosEnFecha(inputFecha.value)
             });
+
+            document.querySelector('#horasDisponibles').addEventListener('change', function() {
+                document.querySelector('#reserva_hora').value = document.querySelector('input[name="hora"]:checked').value
+            });
         });
 
         function setPrecioServicio() {
@@ -51,9 +55,9 @@
             }else{
                 data.forEach(function(valor) {
                     const radioButton = document.createElement('input');
-                    radioButton.setAttribute('type', 'radio');
-                    radioButton.setAttribute('name', 'opcion');
-                    radioButton.setAttribute('value', valor);
+                    radioButton.type = 'radio';
+                    radioButton.name = 'hora';
+                    radioButton.value =  valor;
                     
                     const label = document.createElement('label');
                     label.textContent = valor;
@@ -89,8 +93,8 @@
     <h1>Reserva</h1>
     <div id="formulario">
         {{ form_start(form) }}
-            {{ form_row(form.nombre) }}
-            {{ form_row(form.email) }}
+            {{ form_row(form.nombre_cliente) }}
+            {{ form_row(form.email_cliente) }}
             <div>
                 {{ form_label(form.fecha) }}
                 {{ form_widget(form.fecha, { 'attr': {'class': 'datepicker'} }) }}

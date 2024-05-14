@@ -7,7 +7,6 @@ use App\Entity\ReservaServicio;
 use App\Repository\HorarioRepository;
 use App\Repository\ReservaServicioRepository;
 use App\Repository\ServicioSpaRepository;
-use App\Service\ServiciosSpaService;
 use DateTime;
 
 class ReservaServicioService
@@ -31,8 +30,13 @@ class ReservaServicioService
 
     public function gestionDatosReserva($datos)
     {
-        $nuevaReserva = new ReservaServicio;
-        $this->entityManager->persist($datos);
+        $nuevaReserva = new ReservaServicio($datos);
+        $nuevaReserva->setNombreCliente($datos['nombre_cliente']);
+        $nuevaReserva->setEmailCliente($datos['email_cliente']);
+        $nuevaReserva->setServicio($datos['servicio']);
+        $nuevaReserva->setFecha($datos['fecha']);
+        $nuevaReserva->setHora(new DateTime($datos['hora']));
+        $this->entityManager->persist($nuevaReserva);
         $this->entityManager->flush();
     }
 

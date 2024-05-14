@@ -25,7 +25,7 @@ class ReservaServicioController extends AbstractController
             $datosFormulario = $form->getData();
             $reservaServicioService->gestionDatosReserva($datosFormulario);
 
-            return $this->redirectToRoute('exito');
+            return $this->redirectToRoute('app_reserva_servicio');
         }
 
         return $this->render('reservas/index.html.twig', [

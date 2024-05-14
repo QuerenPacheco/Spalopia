@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ReservaType extends AbstractType
@@ -18,14 +19,16 @@ class ReservaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', TextType::class, [
+            ->add('nombre_cliente', TextType::class, [
+                'label' => 'Nombre',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Por favor, ingresa tu nombre.',
                     ]),
                 ],
             ])
-            ->add('email', EmailType::class, [
+            ->add('email_cliente', EmailType::class, [
+                'label' => 'Email',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Por favor, ingresa tu correo electrónico.',
@@ -40,9 +43,6 @@ class ReservaType extends AbstractType
                     $precio = $choice->getPrecio();
                     return ['data-precio' => $precio];
                 }, 
-            ])
-            ->add('precio', null, [
-                'disabled' => true,
             ])
 
             ->add('fecha', DateType::class, [
@@ -60,6 +60,8 @@ class ReservaType extends AbstractType
             ->add('precio', null, [
                 'disabled' => true,
             ])
+
+            ->add('hora', HiddenType::class)
 
             ->add('Reservar', SubmitType::class);
     }
