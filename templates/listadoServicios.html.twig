@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Servicios{% endblock %}
+
+
+{% block stylesheets %}
+    <style>
+        #servicios{
+            margin-left: 1em;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Servicios disponibles</h1>
+    <div id="servicios">
+    {% for servicio in servicios %}
+        <p>{{ servicio.nombre }} - {{ servicio.precio }}€</p>
+    {% endfor %}
+    </div>
+{% endblock %}

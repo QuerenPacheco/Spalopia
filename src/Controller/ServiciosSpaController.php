@@ -3,20 +3,20 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\ServiciosSpaService;
+use Symfony\Component\HttpFoundation\Response;
 
 class ServiciosSpaController extends AbstractController
 {
    
     #[Route('/servicios', name: 'app_servicios_spa_listado')]
-    public function index(ServiciosSpaService $serviciosSpaService): JsonResponse
+    public function index(ServiciosSpaService $serviciosSpaService): Response
     {
-        $result = $serviciosSpaService->gestionListadoServicios();
+        $servicios = $serviciosSpaService->gestionListadoServicios();
 
-        return $this->json([
-            'servicios' => $result
+        return $this->render('listadoServicios.html.twig', [
+            'servicios' => $servicios,
         ]);
     }
     

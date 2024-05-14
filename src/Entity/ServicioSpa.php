@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ServicioSpaRepository::class)]
-class ServicioSpa
+class ServicioSpa implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -47,5 +47,13 @@ class ServicioSpa
         $this->precio = $precio;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'nombre' => $this->nombre,
+            'precio' => $this->precio,
+        ];
     }
 }
