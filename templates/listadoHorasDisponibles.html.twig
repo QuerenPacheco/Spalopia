@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.addEventListener("load", function() {
+            setPrecioServicio()
+            document.querySelector('form').addEventListener('change', function() {
+                setPrecioServicio()
+            });
+        });
+
+        function setPrecioServicio() {
+            var selectServicio = document.querySelector('#reserva_servicio')
+            var selectedIndex = selectServicio.selectedIndex
+            var servicioSeleccionado = selectServicio.options[selectedIndex];
+            var precio = servicioSeleccionado.getAttribute('data-precio');
+
+            document.querySelector('#reserva_precio').value = precio + ' €'
+        }
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #divHoras{
+            margin-left: 1em;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Horas Disponibles</h1>
+    <p>Servicio elegido: {{servicio}}</p>
+    <p>Fecha: {{servicio}}</p>
+
+    <p>Horas disponibles:</p>    
+    <div id="divHoras">
+    {% for hora in horasDisponibles %}
+        <p>{{hora}}</p>
+    {% endfor %}
+    </div>
+{% endblock %}

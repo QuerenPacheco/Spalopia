@@ -2,32 +2,103 @@
 
 {% block title %}Registro{% endblock %}
 
-{% block body %}
-    <h1>Registro</h1>
-
-    {{ form_start(form) }}
-    {{ form_row(form.nombre) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.servicio) }}
-    {{ form_row(form.precio) }}
-
-{{ form_end(form) }}
-
-<script>
-    window.addEventListener("load", function() {
-        setPrecioServicio()
-        document.querySelector('form').addEventListener('change', function() {
+{% block javascripts %}
+    <script>
+        window.addEventListener("load", function() {
             setPrecioServicio()
+
+            const inputFecha =  document.querySelector('#reserva_fecha')
+            inputFecha.addEventListener('change', function() {
+                buscarServiciosEnFecha(inputFecha.value)
+            });
+
+            document.querySelector('#reserva_servicio').addEventListener('change', function() {
+                setPrecioServicio()
+                buscarServiciosEnFecha(inputFecha.value)
+            });
         });
-    });
 
-    function setPrecioServicio() {
-        var selectServicio = document.querySelector('#reserva_servicio')
-        var selectedIndex = selectServicio.selectedIndex
-        var servicioSeleccionado = selectServicio.options[selectedIndex];
-        var precio = servicioSeleccionado.getAttribute('data-precio');
+        function setPrecioServicio() {
+            const selectServicio = document.querySelector('#reserva_servicio')
+            const selectedIndex = selectServicio.selectedIndex
+            const servicioSeleccionado = selectServicio.options[selectedIndex];
+            const precio = servicioSeleccionado.getAttribute('data-precio');
+            
+            document.querySelector('#reserva_precio').value = precio + ' €'
+        }
 
-        document.querySelector('#reserva_precio').value = precio + ' €'
-    }
-</script>
+        function buscarServiciosEnFecha(fecha) {
+            const idServicio = document.querySelector('#reserva_servicio').value
+            fetch('/comprobarFechaServicios/' + fecha + '/' + idServicio)
+            .then(response => response.json())
+            .then(data => {
+                modificarFormulario(data)
+            })
+            .catch(error => {
+                console.error('Hubo un error:', error);
+            });
+        }
+
+        function modificarFormulario(data){
+            const divHoras = document.querySelector('#horasDisponibles')
+            divHoras.innerHTML = ""
+            if(typeof data === 'string'){
+                const mensaje = document.createElement('p');
+                mensaje.innerHTML = data
+                mensaje.style.color = "red"
+                divHoras.appendChild(mensaje);
+            }else{
+                data.forEach(function(valor) {
+                    const radioButton = document.createElement('input');
+                    radioButton.setAttribute('type', 'radio');
+                    radioButton.setAttribute('name', 'opcion');
+                    radioButton.setAttribute('value', valor);
+                    
+                    const label = document.createElement('label');
+                    label.textContent = valor;
+                    
+                    const br = document.createElement('br');
+                    
+                    divHoras.appendChild(radioButton);
+                    divHoras.appendChild(label);
+                    divHoras.appendChild(br);
+                });
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #formulario{
+            margin-left: 1em;
+        }
+
+        #formulario div{
+            margin-top:0.8em
+        }
+
+        #formulario div input{
+            margin-left:0.5em
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Reserva</h1>
+    <div id="formulario">
+        {{ form_start(form) }}
+            {{ form_row(form.nombre) }}
+            {{ form_row(form.email) }}
+            <div>
+                {{ form_label(form.fecha) }}
+                {{ form_widget(form.fecha, { 'attr': {'class': 'datepicker'} }) }}
+            </div>
+            {{ form_row(form.servicio) }}
+            <p>Horas disponibles (seleccione un día y un servicio): </p>
+            <div id="horasDisponibles"></div>
+            {{ form_row(form.precio) }}
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
