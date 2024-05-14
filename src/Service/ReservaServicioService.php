@@ -54,8 +54,8 @@ class ReservaServicioService
 
         $horasDeServicio = $horaInicio->diff($horaFin)->h;
 
-        $horasDisponibles = [];
-        for ($i = 0; $i < $horasDeServicio; $i++) {
+        $horasDisponibles = [$horaInicio->format('H:i')];
+        for ($i = 1; $i < $horasDeServicio; $i++) {
             array_push($horasDisponibles, $horaInicio->modify('+1 hours')->format('H:i'));
         }
 
